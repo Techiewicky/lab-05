@@ -444,6 +444,61 @@ const data = [
 
 
 
+// Function to populate the player table
+function populateTable(players) {
+    const playerRows = document.getElementById('player-rows');
+    playerRows.innerHTML = ''; // Clear any existing rows
+
+    players.forEach(player => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+            <td>${player.name}</td>
+            <td>${player.team}</td>
+            <td>${player.points}</td>
+            <td>${player.rebounds}</td>
+            <td>${player.assists}</td>
+        `;
+        playerRows.appendChild(row);
+    });
+}
+
+// Function to populate the team filter dropdown
+function populateTeamFilter() {
+    const teamFilter = document.getElementById('team-filter');
+    const teams = [...new Set(data.map(player => player.team))];
+    
+    teams.forEach(team => {
+        const option = document.createElement('option');
+        option.value = team;
+        option.textContent = team;
+        teamFilter.appendChild(option);
+    });
+}
+
+// Event listener for search input
+document.getElementById('search').addEventListener('input', function () {
+    const searchTerm = this.value.toLowerCase();
+    const filteredPlayers = data.filter(player => player.name.toLowerCase().includes(searchTerm));
+    populateTable(filteredPlayers);
+});
+
+// Event listener for team filter dropdown
+document.getElementById('team-filter').addEventListener('change', function () {
+    const selectedTeam = this.value;
+    const filteredPlayers = selectedTeam === 'all' ? data : data.filter(player => player.team === selectedTeam);
+    populateTable(filteredPlayers);
+});
+
+// Event listener for dark mode toggle
+document.getElementById('dark-mode-toggle').addEventListener('click', function () {
+    document.body.classList.toggle('dark-mode');
+});
+
+// Initial population of the table and team filter
+populateTable(data);
+populateTeamFilter();
+
+
 
 
 
